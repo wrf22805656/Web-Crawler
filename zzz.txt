@@ -1,0 +1,2 @@
+# what I have learnt today 
+python -V   #to check python version 
