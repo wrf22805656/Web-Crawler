@@ -1,0 +1,23 @@
+#! /user/bin/env python
+
+import re
+import urllib2
+
+def download(url):
+        print ('downloading:' "\n", url)
+        try:
+                html = urllib2.urlopen(url).read()
+        except urllib2.URLError as e:
+                print 'Downloading error:', e.reason
+                html = None
+        return html
+
+url = 'http://example.webscraping.com/view/United-Kingdom-239'
+html = download(url)
+
+# results = re.findall('<td class="w2p_fw">(.*?)</td>',html)
+# print results
+
+
+result2 = re.findall('<td class="w2p_fw">(.*?)</td>',html)[1]
+print result2
