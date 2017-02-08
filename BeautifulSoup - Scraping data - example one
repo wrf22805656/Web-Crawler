@@ -1,0 +1,48 @@
+#! /user/bin/env python
+
+
+import urllib2
+def download(url):
+        print 'I am downloading now', url
+        try:
+                html = urllib2.urlopen(url).read()
+        except urllib2.URLError as e:
+                print 'Download error', e.reason
+                html = None
+        return html
+
+
+
+from bs4 import BeautifulSoup
+
+broken_html = '<ul class=country><li>Area<li>Population</ul>'
+
+# we need parse the HTML
+
+soup = BeautifulSoup(broken_html, 'html.parser')
+
+fixed_html = soup.prettify()
+
+print fixed_html
+
+
+ul = soup.find('ul', attrs={'class':'country'})
+c = ul.find('li') # return just the first match
+print c
+print ul.find_all('li')
+
+
+
+# lets do one more example
+url = 'http://example.webscraping.com/places/view/Unietd-Kingdom-239'
+
+html = download(url)
+
+soup = BeautifulSoup(html,'lxml')
+# local the area row
+
+tr = soup.find(attrs={'id':'places_area_row'})
+td = tr.find(attrs={'class':'w2p_fw'}) # locate the area tag
+area = td.text
+print area
+
