@@ -1,0 +1,43 @@
+                                return grabweb_n_checkte(url, num_retries-1)
+                return html
+websource2 = grabweb_n_checkte('http://httpstat.us/500')
+print(websource2)
+
+
+
+
+
+# step three, add an agent name to the model
+def agent_grab(url, user_agent='wo hen mei', num_retries=2):
+        print 'I am still downloading now', url
+        headers = {'User-agent',user_agent}
+        request = urllib2.Request(url, headers=headers)
+        try:
+                html = urllib2.urlopen(request).read()
+        except urllib2.URLError as e:
+                print 'Downloading error:', e.reason
+                html = None
+                if num_retries > 0:
+                        if hasattr(e,'code') and 500 <= e.code < 600:
+                                return agent_grab(url, user_agent, num_retries-1)
+                return html
+
+websource3 = agent_grab('http://httpstat.us/500')
+print(websource3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                                      60,0-1        Bot
