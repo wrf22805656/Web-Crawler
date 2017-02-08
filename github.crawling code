@@ -1,8 +1,40 @@
+#! /user/bin/env python
+
+import urllib2
+
+# step one, we can download the website link first
+
+def grabweblink(url):
+        print('I am downloading the website now', url)
+
+        try:
+                html = urllib2.urlopen(url).read()
+        except urllib2.URLError as e:
+                print 'There is something wrong:', e.reason
+                html = None
+        return html
+
+websource = grabweblink('http://tulane.edu')
+print(websource)
+
+
+
+# step two, we can check if there is a temporatory error
+
+def grabweb_n_checkte(url, num_retries=2):
+        print " I'm downloading the website now", url
+        try:
+                html = urllib2.urlopen(url).read()
+        except urllib2.URLError as e:
+                print 'There is something wrong here:', e.reason
+                html = None
+                if num_retries > 0:
+                        if hasattr(e,'code') and 500 <= e.code < 600:
+                        # recursively retry 5xx HTTP errors
                                 return grabweb_n_checkte(url, num_retries-1)
                 return html
 websource2 = grabweb_n_checkte('http://httpstat.us/500')
 print(websource2)
-
 
 
 
@@ -28,16 +60,18 @@ print(websource3)
 
 
 
+# web crawling from the sitemap
+def sitemapfunction(url):
+        # download the sitemap first
+        sitemap = grabweblink(url)
+        # extract the sitemap links
+        links = re.findall('<loc>(.*?)<loc>',sitemap)
+        # download each link
+        for link in links:
+                html = grabweblink(link)
+
+websource4 = sitemapfunction('http://example.webscraping.com/sitemap.xml')
+print(websource4)
 
 
 
-
-
-
-
-
-
-
-
-
-                                                      60,0-1        Bot
